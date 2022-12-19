@@ -1,14 +1,11 @@
 import {useQuery} from "react-query";
 import {getAllProducts} from "../API/fetchData";
 import {Table} from "react-bootstrap";
-import {useState} from "react";
+import {Link} from "react-router-dom";
 
 export const AllProducts = () =>{
 
     const {data, isLoading, isError} = useQuery("products", getAllProducts)
-
-    const [search, setSearch] = useState("")
-
 
     if (isLoading){
         return <p>is loading</p>
@@ -22,17 +19,6 @@ export const AllProducts = () =>{
 
 
     return(
-        <>
-            <div className={"container"}>
-                <input
-                    type="text"
-                    placeholder="Søg..."
-                    onChange={(event) =>{
-                        setSearch(event.target.value)
-                    }}
-                />
-            </div>
-
         <div className={"container"}>
             <div className='py-4'>
                 <Table striped bordered hover>
@@ -42,21 +28,21 @@ export const AllProducts = () =>{
                         <th>Name</th>
                         <th>Price</th>
                         <th>Weight</th>
+                        <th>Click to see and edit the product</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {/* eslint-disable-next-line array-callback-return */}
-                    {(data?.data.filter((valid) => {
-                        if (search ===""){
-                            return valid
-                    }else if (valid.name.toLowerCase().includes(search.toLowerCase())){
-                            return valid
-                        }}).map((product) => (
+                    {(data?.data.map((product) => (
                             <tr key={product.id}>
                                 <td> {product.id} </td>
                                 <td>{product.name}</td>
                                 <td>{product.price}</td>
                                 <td>{product.weight}</td>
+                                <td>
+                                    <Link
+                                        className="btn btn-primary mx-2"
+                                        to={`/seeSingleProduct/${product.id}`}>Edit</Link>
+                                </td>
                             </tr>
                         )))}
                     </tbody>
@@ -64,7 +50,7 @@ export const AllProducts = () =>{
             </div>
         </div>
 
-        </>
+
     )
 }
 

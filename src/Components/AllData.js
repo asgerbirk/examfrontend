@@ -1,10 +1,14 @@
 import {useQuery} from "react-query";
 import {allProductOrders} from "../API/fetchData";
 import {Table} from "react-bootstrap";
+import {useState} from "react";
 
 export const AllData = () =>{
 
     const {data, isLoading, isError} = useQuery("productOrders", allProductOrders);
+
+    const [search, setSearch] = useState("")
+
 
     if (isLoading){
         return <p>is loading</p>
@@ -15,6 +19,16 @@ export const AllData = () =>{
     }
 
     return (
+        <>
+            <div className={"container"}>
+                <input
+                    type="text"
+                    placeholder="Search after destination"
+                    onChange={(event) =>{
+                        setSearch(event.target.value)
+                    }}
+                />
+            </div>
         <div className={"container"}>
             <div className='py-4'>
                 <Table striped bordered hover>
@@ -29,12 +43,15 @@ export const AllData = () =>{
                         <th>Product name</th>
                         <th>Product price</th>
                         <th>Product weight</th>
-
-
                     </tr>
                     </thead>
                     <tbody>
-                    {(data?.data.map((productOrder) => (
+                    {(data?.data.filter((valid) => {
+                        if (search ===""){
+                            return valid
+                        }else if (valid.delivery.destination.toLowerCase().includes(search.toLowerCase())){
+                            return valid
+                        }}).map((productOrder) => (
                         <tr key={productOrder.id}>
 
                             <td> {productOrder.id} </td>
@@ -54,8 +71,8 @@ export const AllData = () =>{
                     )))}
                     </tbody>
                 </Table>
-
             </div>
         </div>
+        </>
     )
 }

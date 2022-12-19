@@ -77,7 +77,7 @@ const {quantity, delivery,product} = productOrder;
                     <form onSubmit={onSubmit}>
 
                         <div className="mb-3">
-                            <label htmlFor="Delivery date" className="form-label">
+                            <label  className="form-label">
                                 Quantity products
                             </label>
                             <input
@@ -86,12 +86,11 @@ const {quantity, delivery,product} = productOrder;
                                 name="quantity"
                                 value={quantity}
                                 onChange={(e) =>onInputChange(e)}
-
                             />
                         </div>
 
                         <div className="mb-3">
-                            <label htmlFor="Email" className="form-label">
+                            <label  className="form-label">
                                 Select a delivery
                             </label>
                             <select value={delivery.id} className="form-control" name="id" onChange={(e) => handleDelivery(e)}>
@@ -101,9 +100,8 @@ const {quantity, delivery,product} = productOrder;
                             </select>
                         </div>
 
-
                         <div className="mb-3">
-                            <label htmlFor="Email" className="form-label">
+                            <label  className="form-label">
                                 Select a product
                             </label>
                             <select value={product.id} className="form-control" name="id" onChange={(e) => productHandle(e)}>
@@ -116,7 +114,7 @@ const {quantity, delivery,product} = productOrder;
                         <button type="submit" className="btn btn-outline-primary">
                             Submit
                         </button>
-                        <Link className="btn btn-outline-danger mx-2" to="/">
+                        <Link className="btn btn-outline-danger mx-2" to="/allData">
                             Cancel
                         </Link>
                     </form>

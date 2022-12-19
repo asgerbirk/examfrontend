@@ -1,14 +1,16 @@
-import {useState} from "react";
-import {createProduct} from "../API/fetchData";
-import {Link, useNavigate} from "react-router-dom";
+import {getProductById, updateProduct} from "../API/fetchData";
+import {Link, useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
 
-export const CreateProduct = () =>{
+export const SeeSingleProduct = () => {
 
     const [product, setProduct] = useState({
         name:"",
         price:"",
         weight:""
     })
+
+    const {id} = useParams();
 
     const{name,price,weight} = product;
 
@@ -18,16 +20,23 @@ export const CreateProduct = () =>{
         setProduct({...product,[e.target.name]:e.target.value})
     }
 
+    useEffect(() => {
+        loadProduct().then(r => console.log(r));
+    }, []);
 
-    const onSubmit = async (e) =>{
-        e.preventDefault()
-        await createProduct(product)
-        console.log(product)
-        navigate("/AllProducts")
+    const onSubmit = async (e) => {
+        e.preventDefault();
+        await updateProduct(product,id)
+        navigate("/allProducts")
     }
 
+    const loadProduct = async () => {
+        const result = await getProductById(id)
+        setProduct(result.data)
+    };
 
-    return(
+
+     return(
         <div className="container">
             <div className="row">
                 <div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
@@ -35,7 +44,7 @@ export const CreateProduct = () =>{
                     <form onSubmit={onSubmit}>
 
                         <div className="mb-3">
-                            <label className="form-label">
+                            <label  className="form-label">
                                 Name
                             </label>
                             <input
@@ -73,10 +82,6 @@ export const CreateProduct = () =>{
                             />
                         </div>
 
-
-
-
-
                         <button type="submit" className="btn btn-outline-primary">
                             Submit
                         </button>
@@ -89,5 +94,4 @@ export const CreateProduct = () =>{
         </div>
 
     )
-
 }
